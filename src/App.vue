@@ -1,18 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-  <Home />
+  <ul>
+    <li>
+      <router-link to="/">首页</router-link>
+    </li>
+    <li>
+      <router-link to="/Home">主页</router-link>
+    </li>
+    <li>
+      <router-link to="/NewsList">新闻列表</router-link>
+    </li>
+  </ul>
+  <!-- 路由匹配到的组件将渲染在这里 -->
+  <router-view></router-view>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
-import Home from './components/Home.vue';
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld,
-    Home
   }
 });
 </script>
