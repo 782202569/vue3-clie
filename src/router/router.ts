@@ -11,7 +11,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     // { path: '', redirect: '/NewsList' },
-    { path: '/', component: Main, name: 'main' },
+    { path: '/', component: Main, name: 'HomeMain' },
     { path: '/Home', component: Home, name: 'home' },
     { path: '/NewsList', component: NewsList, name: 'newsList', alias: ["/list"] },
     { path: '/NewsDetails/:aid', component: NewsDetails, name: 'newsDetails' },
