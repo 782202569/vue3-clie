@@ -5,7 +5,7 @@
         <Header></Header>
       </el-header>
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
+        <el-aside width="180px">Aside</el-aside>
         <el-main>
           <!-- 路由匹配到的组件将渲染在这里 -->
           <router-view></router-view>
@@ -44,6 +44,9 @@ html,body {
   padding: 0;
   height: 100%;
 }
+ol, ul, li {
+    list-style: none;
+}
 .common-layout {
   height: 100%;
 }
@@ -55,5 +58,15 @@ html,body {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px; */
+}
+</style>
+<style lang="less" scoped>
+.common-layout {
+  /deep/ .el-header {
+    padding: 40px 20px;
+    background: #17174c;
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
