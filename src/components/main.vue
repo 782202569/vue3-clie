@@ -1,14 +1,28 @@
 <template>
   <div class="hello">
-    <h1>我是hello world</h1>
+    <h1>我是hello world--{{computedCount}}</h1>
+    <el-button type="primary" @click="addCount">+++</el-button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-
+import { computed, defineComponent } from 'vue';
+import {useStore} from 'vuex'
 export default defineComponent({
   name: 'HomeMain',
+  setup() {
+    let store = useStore()
+    const computedCount = computed(():number => {
+      return store.state.count
+    })
+    const addCount = () => {
+      store.commit('incCount')
+    }
+    return {
+      computedCount,
+      addCount
+    }
+  }
 });
 </script>
 

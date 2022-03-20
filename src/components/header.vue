@@ -5,7 +5,7 @@
   </div>
   <div class="menu">
     <ul>
-      <li v-for="el in titleList" :key="el.id"><span :class="el.id == 0 ? 'active' : ''">{{el.name}}</span></li>
+      <li v-for="el in titleList" :key="el.id" @click="goUrl(el)"><span :class="el.id == 0 ? 'active' : ''">{{el.name}}</span></li>
     </ul>
     <!-- <el-icon :size="20">
       <edit />
@@ -17,31 +17,41 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
+import { useRouter } from 'vue-router';
 // import { Edit } from '@element-plus/icons-vue'
 export default defineComponent({
   components: {
   },
   setup() {
+    const router = useRouter();
+    const goUrl = (val: any): void => {
+      router.push(`${val.router}`)
+    }
     const titleList = reactive([
       {
         id: 0,
         name: '首页',
+        router: '/',
       },
       {
         id: 1,
         name: '大数据可视化平台',
+        router: '/Home',
       },
       {
         id: 2,
         name: '掘金',
+        router: '/NewsList',
       },
       {
         id: 3,
         name: 'CSDN',
+        router: '/',
       },
     ])
     return {
-      titleList
+      titleList,
+      goUrl
     }
   },
 })

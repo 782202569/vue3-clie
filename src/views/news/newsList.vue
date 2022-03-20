@@ -12,16 +12,22 @@
   </el-row>
     <div v-for="(item,index) in list" :key="index" @click="goDetail(index)">{{item}}</div>
   </div>
+  {{count}}
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive,computed } from 'vue'
 import { useRouter } from 'vue-router';
+import { mapState, useStore } from 'vuex';
 interface News {
   list:string[];
 }
+interface stateCount {
+  count: string,
+}
 export default defineComponent({
   setup() {
+    const store = useStore()
     const router = useRouter();
     let list:string[] = reactive([])
     for(let i=1;i<10;i++) {
@@ -30,9 +36,17 @@ export default defineComponent({
     const goDetail = (index: number) => {
       router.push(`/NewsDetails/${index + 1}`)
     }
+    const state:any = mapState(['count'])
+    const storeState:any = {}
+        Object.keys(state).forEach((el:string):void=> {
+            const fn = state[el].bind({$store: store})
+            // 遍历生成这种数据结构 => {name: ref(), age: ref()}
+            storeState[el] = computed(fn)
+        })
     return {
       list,
-      goDetail
+      goDetail,
+      ...storeState
     } as News
   },
 })
