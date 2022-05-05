@@ -43,6 +43,7 @@ export default defineComponent({
             // 遍历生成这种数据结构 => {name: ref(), age: ref()}
             storeState[el] = computed(fn)
         })
+    console.log(store.state.new.count +  '-- 我是new里面的count')
     return {
       list,
       goDetail,

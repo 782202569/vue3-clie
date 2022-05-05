@@ -1,44 +1,102 @@
 <template>
 <div class="common-layout">
-    <el-container style="height:100%">
+    <el-container class="mainContent">
       <el-header>
         <Header></Header>
       </el-header>
-      <el-container>
-        <el-aside width="180px">Aside</el-aside>
+      <el-container class="mainContainer">
+        <el-aside width="180px" style="background: #17174c;">
+          <Aside></Aside>
+        </el-aside>
         <el-main>
           <!-- 路由匹配到的组件将渲染在这里 -->
+          <el-tabs
+                v-model="editableTabsValue"
+                type="card"
+                class="demo-tabs"
+                closable
+                @tab-remove="removeTab"
+              >
+                <el-tab-pane
+                  v-for="item in editableTabs"
+                  :key="item.name"
+                  :label="item.title"
+                  :name="item.name"
+                >
+                </el-tab-pane>
+           </el-tabs>
+           <el-button size="small" @click="addTab(editableTabsValue)">
+              add tab
+            </el-button>
           <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
   </div>
-  <!-- <ul>
-    <li>
-      <router-link to="/">首页</router-link>
-    </li>
-    <li>
-      <router-link to="/Home">主页</router-link>
-    </li>
-    <li>
-      <router-link to="/NewsList">新闻列表</router-link>
-    </li>
-  </ul>
-  <router-view></router-view> -->
 </template>
 
 <script lang="ts">
 import Header from './components/header.vue'
-import { defineComponent } from 'vue';
+import Aside from './components/aside.vue'
+import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'App',
   components: {
     Header,
+    Aside,
+  },
+  setup() {
+    let tabIndex = 2
+    const editableTabsValue = ref('2')
+    const editableTabs = ref([
+      {
+        title: 'Tab 1',
+        name: '1',
+        content: 'Tab 1 content',
+      },
+      {
+        title: 'Tab 2',
+        name: '2',
+        content: 'Tab 2 content',
+      },
+    ])
+
+    const addTab = (targetName: string) => {
+      const newTabName = `${++tabIndex}`
+      editableTabs.value.push({
+        title: 'New Tab',
+        name: newTabName,
+        content: 'New Tab content',
+      })
+      editableTabsValue.value = newTabName
+    }
+    const removeTab = (targetName: string) => {
+      const tabs = editableTabs.value
+      let activeName = editableTabsValue.value
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            const nextTab = tabs[index + 1] || tabs[index - 1]
+            if (nextTab) {
+              activeName = nextTab.name
+            }
+          }
+        })
+      }
+      editableTabsValue.value = activeName
+      editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
+    }
+    return {
+      removeTab,
+      addTab,
+      editableTabs,
+      editableTabsValue,
+    }
   }
 });
 </script>
 
-<style>
+<style lang="less">
 html,body {
   margin: 0;
   padding: 0;
@@ -49,24 +107,36 @@ ol, ul, li {
 }
 .common-layout {
   height: 100%;
+  .mainContent{
+    height:100%;
+    overflow: hidden;
+    .mainContainer {
+      height: 100%;
+      overflow-y: auto;
+    }
+  }
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   height: 100%;
-  /* -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px; */
 }
 </style>
 <style lang="less" scoped>
 .common-layout {
-  /deep/ .el-header {
+  :deep(.el-header) {
     padding: 40px 20px;
     background: #17174c;
     display: flex;
     align-items: center;
+  }
+  :deep(.demo-tabs > .el-tabs__content){
+    padding: 32px;
+    color: #6b778c;
+    font-size: 32px;
+    font-weight: 600;
+  }
+  :deep(.el-tabs__content) {
+    display: none;
   }
 }
 </style>
